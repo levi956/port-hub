@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:port_hub/pages/chats_page.dart';
 import 'package:port_hub/pages/home_page.dart';
 import 'package:port_hub/pages/onboarding_page.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         textTheme: GoogleFonts.openSansTextTheme(),
       ),
-      home: const HomePage(),
+      home: const Onboarding(),
     );
   }
 }

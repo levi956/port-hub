@@ -26,7 +26,7 @@ class _OnboardingState extends State<Onboarding> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, top: 100),
+          padding: const EdgeInsets.only(left: 30, right: 30, top: 50),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -41,7 +41,7 @@ class _OnboardingState extends State<Onboarding> {
                 child: Image.asset('assets/images/illustration1.png',
                     height: 264.71, width: 252),
               ),
-              const SizedBox(height: 90),
+              const SizedBox(height: 50),
               Center(
                 child: BlueButton(
                     text: 'Login',

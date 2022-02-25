@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:port_hub/pages/home_page.dart';
 import 'package:port_hub/pages/sign_up.dart';
 import 'package:port_hub/utils/styles/color_constants.dart';
 import 'package:port_hub/utils/widgets/background_image.dart';
@@ -66,7 +67,7 @@ class _LoginState extends State<Login> {
                   CustomInputFieldFb1(
                     inputController: _emailController,
                     hintText: 'Email',
-                    isHiddenText: _isVisible,
+                    isHiddenText: false,
                     validatorR: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email address';
@@ -102,6 +103,7 @@ class _LoginState extends State<Login> {
                       text: 'Login',
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
+                          pushTo(context, const HomePage());
                           // onPressed function goes here
                         }
                       },

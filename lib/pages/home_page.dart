@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:port_hub/utils/styles/color_constants.dart';
+import 'package:port_hub/utils/widgets/message_toast.dart';
 import 'package:port_hub/utils/widgets/recent_contacts.dart';
 import 'package:port_hub/utils/widgets/recent_messages.dart';
 
+import '../services/auth.dart';
 import '../utils/navigation/navigation.dart';
 import '../utils/status_bar_color.dart';
 import 'menu_page.dart';
@@ -40,7 +43,10 @@ class HomePage extends StatelessWidget {
                         color: white.withOpacity(0.3), shape: BoxShape.circle),
                     child: IconButton(
                       onPressed: () {
-                        pushTo(context, const Menu());
+                        uid = FirebaseAuth.instance.currentUser?.uid;
+                        print(uid);
+                        Auth.signOut();
+                        // pushTo(context, const Menu());
                       },
                       icon: const Icon(Icons.menu),
                       iconSize: 25,

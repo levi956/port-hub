@@ -76,9 +76,6 @@ class OutlineButtonFb1 extends StatelessWidget {
           side: MaterialStateProperty.all(
             BorderSide(color: primaryColor, width: 1.4),
           ),
-          // padding: MaterialStateProperty.all(
-          //   const EdgeInsets.symmetric(vertical: 20, horizontal: 50),
-          // ),
           shape: MaterialStateProperty.all(
             const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(

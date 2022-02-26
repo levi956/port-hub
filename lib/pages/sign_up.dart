@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:port_hub/pages/home_page.dart';
 import 'package:port_hub/pages/login_page.dart';
 import 'package:port_hub/pages/onboarding_page.dart';
 import 'package:port_hub/utils/styles/color_constants.dart';
 import 'package:port_hub/utils/widgets/background_image.dart';
+import 'package:port_hub/utils/widgets/message_toast.dart';
 
+import '../services/auth.dart';
 import '../utils/navigation/navigation.dart';
 import '../utils/status_bar_color.dart';
 import '../utils/widgets/buttons.dart';
 import '../utils/widgets/custom_textfield.dart';
+import '../utils/widgets/progress_indicator.dart';
 
 class SignUp extends StatefulWidget {
   final Function? toggleView;
@@ -19,7 +23,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  bool _isVisible = false;
+  bool _isVisible = true;
 
   void _togglePasswordView() {
     setState(() {
@@ -158,6 +162,7 @@ class _SignUpState extends State<SignUp> {
                       text: 'SignUp',
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
+                          signUp();
                           // onPressed function goes here
                         }
                       },
@@ -195,5 +200,16 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
+  }
+
+  void signUp() async {
+    showLoader(context);
+    await Auth.signUp(
+      _newUserEmailController.text.trim(),
+      _newUserPasswordController.text.trim(),
+    );
+    pop(context);
+    pushToAndClearStack(context, const HomePage());
+    showToast('Account Successfully created');
   }
 }

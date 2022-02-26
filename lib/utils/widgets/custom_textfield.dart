@@ -33,6 +33,7 @@ class CustomInputFieldFb1 extends StatelessWidget {
         ],
       ),
       child: TextFormField(
+        autocorrect: false,
         controller: inputController,
         validator: validatorR,
         obscureText: isHiddenText,

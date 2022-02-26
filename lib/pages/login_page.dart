@@ -1,13 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:port_hub/pages/home_page.dart';
 import 'package:port_hub/pages/sign_up.dart';
 import 'package:port_hub/utils/styles/color_constants.dart';
 import 'package:port_hub/utils/widgets/background_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import '../services/auth.dart';
 import '../utils/navigation/navigation.dart';
 import '../utils/status_bar_color.dart';
 import '../utils/widgets/buttons.dart';
 import '../utils/widgets/custom_textfield.dart';
+import '../utils/widgets/progress_indicator.dart';
+import 'home_page.dart';
 import 'onboarding_page.dart';
 
 class Login extends StatefulWidget {
@@ -23,6 +27,24 @@ class _LoginState extends State<Login> {
       _isVisible = !_isVisible;
     });
   }
+
+  // @override
+  // initState() {
+  //   listenEvent();
+  //   super.initState();
+  // }
+
+  // void listenEvent() {
+  //   FirebaseAuth.instance.authStateChanges().listen((User? user) {
+  //     if (user == null) {
+  //       print('no user detected');
+  //     } else {
+  //       print('user detected');
+  //       uid = FirebaseAuth.instance.currentUser!.uid;
+  //       print(uid);
+  //     }
+  //   });
+  // }
 
   bool _isVisible = true;
   static final _formKey = GlobalKey<FormState>();
@@ -103,7 +125,10 @@ class _LoginState extends State<Login> {
                       text: 'Login',
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          pushTo(context, const HomePage());
+                          signIn();
+
+                          // throw firebase sign in here but with ()
+                          // pushTo(context, const HomePage());
                           // onPressed function goes here
                         }
                       },
@@ -141,5 +166,17 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  void signIn() async {
+    showLoader(context);
+    await Auth.signIn(
+        _emailController.text.trim(), _passwordController.text.trim());
+    pop(context);
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      print('nope, no user, didn\'t go');
+    }
+    pushToAndClearStack(context, const HomePage());
   }
 }

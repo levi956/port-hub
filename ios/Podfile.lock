@@ -1,9 +1,16 @@
 PODS:
+  - cloud_firestore (3.1.10):
+    - Firebase/Firestore (= 8.11.0)
+    - firebase_core
+    - Flutter
   - Firebase/Auth (8.11.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 8.11.0)
   - Firebase/CoreOnly (8.11.0):
     - FirebaseCore (= 8.11.0)
+  - Firebase/Firestore (8.11.0):
+    - Firebase/CoreOnly
+    - FirebaseFirestore (~> 8.11.0)
   - firebase_auth (3.3.9):
     - Firebase/Auth (= 8.11.0)
     - firebase_core
@@ -68,6 +75,7 @@ PODS:
   - Toast (4.0.0)
 
 DEPENDENCIES:
+  - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `8.11.0`)
@@ -89,6 +97,8 @@ SPEC REPOS:
     - Toast
 
 EXTERNAL SOURCES:
+  cloud_firestore:
+    :path: ".symlinks/plugins/cloud_firestore/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
@@ -109,6 +119,7 @@ CHECKOUT OPTIONS:
     :tag: 8.11.0
 
 SPEC CHECKSUMS:
+  cloud_firestore: c6c42fe62809b7417aa3c45a6ef0c2812f7fb0d6
   Firebase: 44dd9724c84df18b486639e874f31436eaa9a20c
   firebase_auth: 99c9cdc8cc2e59f6fd4960b6e183f5430d237838
   firebase_core: 08f6a85f62060111de5e98d6a214810d11365de9

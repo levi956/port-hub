@@ -4,7 +4,7 @@ import '../../models/user.dart';
 import '../styles/color_constants.dart';
 
 class RecentContacts extends StatelessWidget {
-  final contactList = User.generateUsers();
+  final contactList = Users.generateUsers();
   RecentContacts({Key? key}) : super(key: key);
 
   @override

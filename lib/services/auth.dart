@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:port_hub/utils/widgets/message_toast.dart';
 
-String? uid;
+import '../utils/styles/color_constants.dart';
 
 class Auth {
   static Future<void> signUp(String email, String password) async {
@@ -11,9 +11,7 @@ class Auth {
       // uid = userCredential.user!.uid;
 
     } on FirebaseAuthException catch (error) {
-      if (error.code == 'email-already-in-use') {
-        showErrorToast('The account is already in use');
-      }
+      showToast(error.toString());
     }
   }
 

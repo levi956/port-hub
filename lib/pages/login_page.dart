@@ -1,9 +1,9 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:port_hub/pages/sign_up.dart';
 import 'package:port_hub/utils/styles/color_constants.dart';
 import 'package:port_hub/utils/widgets/background_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:port_hub/utils/widgets/message_toast.dart';
 
 import '../services/auth.dart';
 import '../utils/navigation/navigation.dart';
@@ -127,7 +127,6 @@ class _LoginState extends State<Login> {
                         if (_formKey.currentState!.validate()) {
                           signIn();
 
-                          // throw firebase sign in here but with ()
                           // pushTo(context, const HomePage());
                           // onPressed function goes here
                         }
@@ -173,10 +172,13 @@ class _LoginState extends State<Login> {
     await Auth.signIn(
         _emailController.text.trim(), _passwordController.text.trim());
     pop(context);
-    final User? user = FirebaseAuth.instance.currentUser;
+
+    User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      print('nope, no user, didn\'t go');
+      showErrorToast('An error has occured');
+    } else {
+      pushToAndClearStack(context, const HomePage());
+      showToast('Signed in successfully');
     }
-    pushToAndClearStack(context, const HomePage());
   }
 }

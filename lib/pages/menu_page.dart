@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:port_hub/utils/navigation/navigation.dart';
 import 'package:port_hub/utils/widgets/background_image.dart';
 
+import '../services/auth.dart';
 import '../utils/styles/color_constants.dart';
-import 'chats_page.dart';
 import 'onboarding_page.dart';
 import 'user/view_profile_page.dart';
 
-class Menu extends StatelessWidget {
+class Menu extends StatefulWidget {
   const Menu({Key? key}) : super(key: key);
 
+  @override
+  State<Menu> createState() => _MenuState();
+}
+
+class _MenuState extends State<Menu> {
   @override
   Widget build(BuildContext context) {
     return BackgroundImageFb0(
@@ -52,7 +57,7 @@ class Menu extends StatelessWidget {
               textButton('Portals', () {}),
               textButton('Help', () {}),
               textButton('Logout', () {
-                pushToAndClearStack(context, const Onboarding());
+                goOut();
               })
             ],
           ),
@@ -74,5 +79,12 @@ class Menu extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void goOut() {
+    // uid = FirebaseAuth.instance.currentUser?.uid;
+    // print(uid);
+    Auth.signOut();
+    pushToAndClearStack(context, const Onboarding());
   }
 }

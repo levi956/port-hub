@@ -1,7 +1,7 @@
 import 'user.dart';
 
 class Message {
-  User? user;
+  Users? user;
   String? lastMessage;
   String? lastTime;
   bool? isContinue;
@@ -25,4 +25,4 @@ class Message {
   }
 }
 
-var users = User.generateUsers();
+var users = Users.generateUsers();

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:port_hub/pages/home_page.dart';
 import 'package:port_hub/pages/login_page.dart';
@@ -6,7 +7,9 @@ import 'package:port_hub/utils/styles/color_constants.dart';
 import 'package:port_hub/utils/widgets/background_image.dart';
 import 'package:port_hub/utils/widgets/message_toast.dart';
 
+import '../models/user.dart';
 import '../services/auth.dart';
+import '../services/database_methods.dart';
 import '../utils/navigation/navigation.dart';
 import '../utils/status_bar_color.dart';
 import '../utils/widgets/buttons.dart';
@@ -24,6 +27,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   bool _isVisible = true;
+  DatabaseMethods databaseMethods = DatabaseMethods();
 
   void _togglePasswordView() {
     setState(() {
@@ -37,6 +41,7 @@ class _SignUpState extends State<SignUp> {
   final _newUserEmailController = TextEditingController();
   final _newUserPasswordController = TextEditingController();
   final _newUserConfirmPasswordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     setStatusBarColor(color: BarColor.black);
@@ -202,14 +207,31 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
+  // signs up user and saves to database
   void signUp() async {
     showLoader(context);
     await Auth.signUp(
       _newUserEmailController.text.trim(),
       _newUserPasswordController.text.trim(),
     );
+
+    // Map<String, String> userDetails = {
+    //   "firstName": _firstNameController.text.trim(),
+    //   "lastName": _lastNameController.text.trim(),
+    //   "email": _newUserEmailController.text.trim(),
+    // };
     pop(context);
-    pushToAndClearStack(context, const HomePage());
-    showToast('Account Successfully created');
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      showErrorToast('An error occured');
+    } else {
+      // databaseMethods.uploadUserInfo(userDetails);
+      await databaseMethods.addUserInfo(Users(
+          firstName: _firstNameController.text.trim(),
+          lastName: _lastNameController.text.trim(),
+          email: _newUserEmailController.text.trim()));
+      pushToAndClearStack(context, const HomePage());
+      showToast('Account Successfully created');
+    }
   }
 }

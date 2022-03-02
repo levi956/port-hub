@@ -38,13 +38,28 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.only(left: 25.0, top: 45),
               child: Row(
                 children: [
-                  Text(
-                    '',
-                    // myDatabase.getFirstName(),
-                    style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w300,
-                        color: white),
+                  FutureBuilder(
+                    future: myDatabase.getName2(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasError) {
+                          return const Center(
+                            child: Text('an error has occured '),
+                          );
+                        } else if (snapshot.hasData) {
+                          final data = snapshot.data as String;
+                          return Text(
+                            "Chat with\nyour portals, $data",
+                            // myDatabase.getFirstName(),
+                            style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.w300,
+                                color: white),
+                          );
+                        }
+                      }
+                      return const CircularProgressIndicator.adaptive();
+                    },
                   ),
                   const Spacer(),
                   Container(
@@ -65,7 +80,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             RecentContacts(),
-            RecentMessages(),
+            const RecentMessages(),
           ],
         ),
       ),

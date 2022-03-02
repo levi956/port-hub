@@ -230,8 +230,10 @@ class _SignUpState extends State<SignUp> {
           firstName: _firstNameController.text.trim(),
           lastName: _lastNameController.text.trim(),
           email: _newUserEmailController.text.trim()));
-      pushToAndClearStack(context, const HomePage());
+      // pushToAndClearStack(context, const HomePage());
+      // create Dialog here for success registeration, then login
       showToast('Account Successfully created');
+      Auth.signOut();
     }
   }
 }

@@ -22,11 +22,12 @@ class DatabaseMethods {
 
   // saves user details to firebase approach 2
   // study and master this approach
-  addUserInfo(Users userInfo) {
-    return myDatabase
+  addUserInfo(Users userInfo) async {
+    uid = FirebaseAuth.instance.currentUser?.uid;
+    await myDatabase
         .doc(uid)
         .set(userInfo.toJson())
-        .then((value) => print('worked'))
+        // .then((value) => print('worked'))
         .catchError((error) => (showErrorToast('Error')));
   }
 

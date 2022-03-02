@@ -157,7 +157,7 @@ class _LoginState extends State<Login> {
 
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      showErrorToast('An error has occured');
+      // showErrorToast('An error has occured');
     } else {
       pushToAndClearStack(context, const HomePage());
       showToast('Signed in successfully');

@@ -8,6 +8,8 @@ import '../utils/widgets/message_toast.dart';
 class DatabaseMethods {
   CollectionReference myDatabase =
       FirebaseFirestore.instance.collection('users');
+  DocumentReference<Map<String, dynamic>> myDatabaseDocument =
+      FirebaseFirestore.instance.collection("users").doc(uid);
 
   // saves user details to firebase approach 1
   // the method takes it in as a map
@@ -28,6 +30,14 @@ class DatabaseMethods {
         .catchError((error) => (showErrorToast('Error')));
   }
 
+  // returns instance of future, not the value
+  Future<String> getName2() async {
+    uid = FirebaseAuth.instance.currentUser?.uid;
+    var x = await myDatabase.doc(uid).get();
+    var result = (x.data() as Map)["firstName"];
+    return result.toString();
+  }
+
   //get weights
   //  Stream<List<Users>> streamWeights() async* {
   //   yield* myDatabase.snapshots().map((event) {
@@ -39,12 +49,6 @@ class DatabaseMethods {
   //   });
   // }
 
-  getUserFirstName() async {
-    await myDatabase.doc(uid).get().then((DocumentSnapshot userDocument) => {
-          if (userDocument.exists) {print('object')}
-        });
-  }
-
   // String getFirstName() {
   //   DocumentReference documentReference = myDatabase.doc(uid);
   //   String? firstName;
@@ -52,12 +56,17 @@ class DatabaseMethods {
   //   return firstName!;
   // }
 
-  getName() {
-    DocumentReference documentReference = myDatabase.doc(uid);
-    myDatabase.get().then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        print(doc["firstName"]);
-      }
-    });
-  }
+  // getName() {  --- this is a colletion reference
+  //   DocumentReference documentReference = myDatabase.doc(uid);
+  //   myDatabase.doc.(uid).get().then((QuerySnapshot querySnapshot) {
+  //     String nnn = (querySnapshot.docs.first.data() as Map)["firstName"];
+  //     print(nnn);
+  //     // for (var doc in querySnapshot.docs) {
+  //     //   (doc.data() as Map)["firstName"];
+  //     //   // Map.from(doc.data()!["firstName"]);
+  //     //   print(doc["firstName"]);
+  //     // }
+  //   });
+  // }
+
 }

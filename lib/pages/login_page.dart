@@ -28,24 +28,6 @@ class _LoginState extends State<Login> {
     });
   }
 
-  // @override
-  // initState() {
-  //   listenEvent();
-  //   super.initState();
-  // }
-
-  // void listenEvent() {
-  //   FirebaseAuth.instance.authStateChanges().listen((User? user) {
-  //     if (user == null) {
-  //       print('no user detected');
-  //     } else {
-  //       print('user detected');
-  //       uid = FirebaseAuth.instance.currentUser!.uid;
-  //       print(uid);
-  //     }
-  //   });
-  // }
-
   bool _isVisible = true;
   static final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();

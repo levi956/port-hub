@@ -1,16 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:port_hub/utils/styles/color_constants.dart';
-import 'package:port_hub/utils/widgets/message_toast.dart';
 import 'package:port_hub/utils/widgets/recent_contacts.dart';
 import 'package:port_hub/utils/widgets/recent_messages.dart';
 
-import '../services/auth.dart';
 import '../services/database_methods.dart';
 import '../utils/navigation/navigation.dart';
 import '../utils/status_bar_color.dart';
 import 'menu_page.dart';
-import 'onboarding_page.dart';
 
 class HomePage extends StatefulWidget {
   static const IconData menu = IconData(0xe3dc, fontFamily: 'MaterialIcons');
@@ -23,7 +19,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    myDatabase.getName();
     super.initState();
   }
 
@@ -44,10 +39,10 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 children: [
                   Text(
-                    'h',
+                    '',
                     // myDatabase.getFirstName(),
                     style: TextStyle(
-                        fontSize: 25,
+                        fontSize: 10,
                         fontWeight: FontWeight.w300,
                         color: white),
                   ),

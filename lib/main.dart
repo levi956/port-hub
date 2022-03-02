@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:port_hub/pages/onboarding_page.dart';
+
 import 'package:port_hub/services/auth_state.dart';
 
 void main() async {

@@ -45,17 +45,17 @@ class ViewProfile extends StatelessWidget {
                 child: Text('User Profile'),
               ),
               const SizedBox(height: 30),
-              userField('Name', 'Nifesi Odumirin'),
+              userField('Name', 'to read from user database'),
               const Divider(
                 color: Colors.black,
               ),
               const SizedBox(height: 30),
-              userField('Level', '400'),
+              userField('Level', 'Edit profile to enter level'),
               const Divider(
                 color: Colors.black,
               ),
               const SizedBox(height: 30),
-              userField('Hostel', 'NH room 15'),
+              userField('Hostel', 'NH'),
               const Divider(
                 color: Colors.black,
               ),

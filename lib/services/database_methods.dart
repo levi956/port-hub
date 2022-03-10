@@ -31,7 +31,8 @@ class DatabaseMethods {
         .catchError((error) => (showErrorToast('Error')));
   }
 
-  // returns instance of future, not the value
+  // returns instance of future of user first name, not the value
+  // furture builder used to get the value
   Future<String> getName2() async {
     uid = FirebaseAuth.instance.currentUser?.uid;
     var x = await myDatabase.doc(uid).get();
@@ -39,35 +40,12 @@ class DatabaseMethods {
     return result.toString();
   }
 
-  //get weights
-  //  Stream<List<Users>> streamWeights() async* {
-  //   yield* myDatabase.snapshots().map((event) {
-  //     List<Users> userDetails = event.docs.map((doc) {
-  //       return Users.fromJson(doc.data())..id = doc.id as int?;
-  //     }).toList();
-  //     // weights.sort((a, b) => b.dateAdded.compareTo(a.dateAdded));
-  //     return userDetails;
-  //   });
-  // }
-
-  // String getFirstName() {
-  //   DocumentReference documentReference = myDatabase.doc(uid);
-  //   String? firstName;
-  //   documentReference.get() => then(document)
-  //   return firstName!;
-  // }
-
-  // getName() {  --- this is a colletion reference
-  //   DocumentReference documentReference = myDatabase.doc(uid);
-  //   myDatabase.doc.(uid).get().then((QuerySnapshot querySnapshot) {
-  //     String nnn = (querySnapshot.docs.first.data() as Map)["firstName"];
-  //     print(nnn);
-  //     // for (var doc in querySnapshot.docs) {
-  //     //   (doc.data() as Map)["firstName"];
-  //     //   // Map.from(doc.data()!["firstName"]);
-  //     //   print(doc["firstName"]);
-  //     // }
-  //   });
-  // }
-
+  // creating the stream here
+  Stream<List<Users>> readUsers() => FirebaseFirestore.instance
+      .collection('users')
+      // modify where to user itself field
+      // .where('firstName', isNotEqualTo: funcThatMakesAsyncCall())
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => Users.fromJson(doc.data())).toList());
 }

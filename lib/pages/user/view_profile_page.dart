@@ -16,7 +16,7 @@ class ViewProfile extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -37,6 +37,7 @@ class ViewProfile extends StatelessWidget {
                       child: const Text('Edit Profile'))
                 ],
               ),
+              const SizedBox(height: 30),
               Center(
                 child: Image.asset('assets/images/porthub.png',
                     height: 29.34, width: 166.52),

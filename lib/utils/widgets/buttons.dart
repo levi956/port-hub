@@ -5,11 +5,13 @@ class BlueButton extends StatelessWidget {
   final String text;
   final Function() onPressed;
   final Color buttonColor;
+  final Color? buttonTextColor;
 
   const BlueButton(
       {required this.text,
       required this.onPressed,
       required this.buttonColor,
+      this.buttonTextColor,
       Key? key})
       : super(key: key);
 
@@ -40,8 +42,10 @@ class BlueButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           text,
-          style: const TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w300),
+          style: TextStyle(
+              color: buttonTextColor,
+              fontSize: 14,
+              fontWeight: FontWeight.w300),
         ),
       ),
     );

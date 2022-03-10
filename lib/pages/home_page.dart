@@ -50,9 +50,8 @@ class _HomePageState extends State<HomePage> {
                           final data = snapshot.data as String;
                           return Text(
                             "Chat with\nyour portals, $data",
-                            // myDatabase.getFirstName(),
                             style: TextStyle(
-                                fontSize: 25,
+                                fontSize: 20,
                                 fontWeight: FontWeight.w300,
                                 color: white),
                           );

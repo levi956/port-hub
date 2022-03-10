@@ -15,17 +15,18 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
+    setStatusBarColor(color: BarColor.black);
     final _newNameController = TextEditingController();
     final _newLevelController = TextEditingController();
     final _newHostelController = TextEditingController();
     final _newEmailController = TextEditingController();
-    setStatusBarColor(color: BarColor.black);
+
     return BackgroundImageFb0(
       imagePath: 'assets/images/background1.png',
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -42,6 +43,7 @@ class _EditProfileState extends State<EditProfile> {
                   const Text('Save')
                 ],
               ),
+              const SizedBox(height: 30),
               Center(
                 child: Image.asset('assets/images/porthub.png',
                     height: 29.34, width: 166.52),

@@ -3,13 +3,20 @@ class Users {
   String? firstName;
   String? lastName;
   String? email;
+  String? lastMessage;
   String? profilePhoto;
 
   Users(
-      {this.id, this.firstName, this.lastName, this.profilePhoto, this.email});
+      {this.id,
+      this.firstName,
+      this.lastName,
+      this.profilePhoto,
+      this.email,
+      this.lastMessage});
 
   factory Users.fromJson(Map<String, dynamic> map) {
     return Users(
+        lastMessage: map["lastMessage"],
         firstName: map["firstName"],
         lastName: map["lastName"],
         email: map["email"],
@@ -21,6 +28,7 @@ class Users {
       "firstName": firstName,
       "lastName": lastName,
       "email": email,
+      "lastMessage": lastMessage
     };
   }
 

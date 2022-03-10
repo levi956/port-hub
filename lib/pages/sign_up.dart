@@ -1,11 +1,12 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:port_hub/pages/home_page.dart';
 import 'package:port_hub/pages/login_page.dart';
 import 'package:port_hub/pages/onboarding_page.dart';
 import 'package:port_hub/utils/styles/color_constants.dart';
 import 'package:port_hub/utils/widgets/background_image.dart';
-import 'package:port_hub/utils/widgets/message_toast.dart';
+import 'package:port_hub/utils/widgets/bottom_sheet.dart';
 
 import '../models/user.dart';
 import '../services/auth.dart';
@@ -44,6 +45,8 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
+    var bottom = MediaQuery.of(context).viewInsets.bottom;
+    bottom = max(min(bottom, 100), 0);
     setStatusBarColor(color: BarColor.black);
     return GestureDetector(
       onTap: () {
@@ -55,150 +58,162 @@ class _SignUpState extends State<SignUp> {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
-          body: Form(
-            key: _formKey,
+          body: SingleChildScrollView(
+            reverse: true,
             child: Padding(
-              padding: const EdgeInsets.only(left: 30, right: 30, top: 60),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  IconButton(
-                    iconSize: 20,
-                    icon: const Icon(Icons.arrow_back_ios_new),
-                    onPressed: () {
-                      pushToAndClearStack(context, const Onboarding());
-                    },
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Center(
-                    child: Image.asset('assets/images/porthub.png',
-                        height: 29.34, width: 166.52),
-                  ),
-                  const SizedBox(height: 30),
-                  CustomInputFieldFb1(
-                    inputController: _firstNameController,
-                    hintText: 'First Name',
-                    isHiddenText: false,
-                    validatorR: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your first name';
-                      } else if (!RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
-                        return 'Name cannot contain special characters';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  CustomInputFieldFb1(
-                    inputController: _lastNameController,
-                    hintText: 'Last Name',
-                    isHiddenText: false,
-                    validatorR: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your last name';
-                      } else if (!RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
-                        return 'Name cannot contain special characters';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  CustomInputFieldFb1(
-                    inputController: _newUserEmailController,
-                    hintText: 'Email',
-                    isHiddenText: false,
-                    validatorR: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email address';
-                      } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                          .hasMatch(value)) {
-                        return 'Please enter a valid email address';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  CustomInputFieldFb1(
-                    iconSuffix: InkWell(
-                      onTap: _togglePasswordView,
-                      child: Icon(
-                        _isVisible ? Icons.visibility : Icons.visibility_off,
-                        color: Colors.black,
-                      ),
-                    ),
-                    inputController: _newUserPasswordController,
-                    hintText: 'Password',
-                    isHiddenText: _isVisible,
-                    validatorR: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  CustomInputFieldFb1(
-                    iconSuffix: InkWell(
-                      onTap: _togglePasswordView,
-                      child: Icon(
-                        _isVisible ? Icons.visibility : Icons.visibility_off,
-                        color: Colors.black,
-                      ),
-                    ),
-                    inputController: _newUserConfirmPasswordController,
-                    hintText: 'Confrim Password',
-                    isHiddenText: _isVisible,
-                    validatorR: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please confirm your password';
-                      }
-                      String paassword = _newUserPasswordController.text;
-                      if (paassword != _newUserConfirmPasswordController.text) {
-                        return 'Paasswords do not match';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 40),
-                  Center(
-                    child: OutlineButtonFb1(
-                      text: 'SignUp',
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          signUp();
-                          // onPressed function goes here
-                        }
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+              padding: EdgeInsets.only(bottom: bottom),
+              child: Form(
+                key: _formKey,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 30, right: 30, top: 35),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Already have an account?',
-                        style: TextStyle(
-                            color: Colors.grey.shade600,
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      TextButton(
+                      IconButton(
+                        iconSize: 20,
+                        icon: const Icon(Icons.arrow_back_ios_new),
                         onPressed: () {
-                          pushReplacementTo(context, const Login());
+                          pushToAndClearStack(context, const Onboarding());
                         },
-                        child: Text(
-                          'Login',
-                          style: TextStyle(
-                            color: lightBlue,
-                            fontSize: 14.0,
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Center(
+                        child: Image.asset('assets/images/porthub.png',
+                            height: 29.34, width: 166.52),
+                      ),
+                      const SizedBox(height: 25),
+                      CustomInputFieldFb1(
+                        inputController: _firstNameController,
+                        hintText: 'First Name',
+                        isHiddenText: false,
+                        validatorR: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your first name';
+                          } else if (!RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
+                            return 'Name cannot contain special characters';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      CustomInputFieldFb1(
+                        inputController: _lastNameController,
+                        hintText: 'Last Name',
+                        isHiddenText: false,
+                        validatorR: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your last name';
+                          } else if (!RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
+                            return 'Name cannot contain special characters';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      CustomInputFieldFb1(
+                        inputController: _newUserEmailController,
+                        hintText: 'Email',
+                        isHiddenText: false,
+                        validatorR: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email address';
+                          } else if (!RegExp(
+                                  r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                              .hasMatch(value)) {
+                            return 'Please enter a valid email address';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      CustomInputFieldFb1(
+                        iconSuffix: InkWell(
+                          onTap: _togglePasswordView,
+                          child: Icon(
+                            _isVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.black,
                           ),
                         ),
-                      )
+                        inputController: _newUserPasswordController,
+                        hintText: 'Password',
+                        isHiddenText: _isVisible,
+                        validatorR: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      CustomInputFieldFb1(
+                        iconSuffix: InkWell(
+                          onTap: _togglePasswordView,
+                          child: Icon(
+                            _isVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.black,
+                          ),
+                        ),
+                        inputController: _newUserConfirmPasswordController,
+                        hintText: 'Confrim Password',
+                        isHiddenText: _isVisible,
+                        validatorR: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please confirm your password';
+                          }
+                          String paassword = _newUserPasswordController.text;
+                          if (paassword !=
+                              _newUserConfirmPasswordController.text) {
+                            return 'Paasswords do not match';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 40),
+                      Center(
+                        child: OutlineButtonFb1(
+                          text: 'SignUp',
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              signUp();
+                              // onPressed function goes here
+                            }
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Already have an account?',
+                            style: TextStyle(
+                                color: Colors.grey.shade600,
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              pushReplacementTo(context, const Login());
+                            },
+                            child: Text(
+                              'Login',
+                              style: TextStyle(
+                                color: lightBlue,
+                                fontSize: 14.0,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
@@ -221,18 +236,19 @@ class _SignUpState extends State<SignUp> {
     //   "email": _newUserEmailController.text.trim(),
     // };
     pop(context);
+
     final User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      showErrorToast('An error occured');
+      // showErrorToast('An error occured');
     } else {
       // databaseMethods.uploadUserInfo(userDetails);
       await databaseMethods.addUserInfo(Users(
           firstName: _firstNameController.text.trim(),
           lastName: _lastNameController.text.trim(),
           email: _newUserEmailController.text.trim()));
-      // pushToAndClearStack(context, const HomePage());
-      // create Dialog here for success registeration, then login
-      showToast('Account Successfully created');
+      await showResponseBottomSheet(
+          context, 'Account Successfully Created\nPlease login');
+      pop(context);
       Auth.signOut();
     }
   }

@@ -20,7 +20,32 @@ class Message {
         user: users[1],
         lastMessage: 'Repairs of your door would be peformed on this day :',
         lastTime: '2:30',
-      )
+      ),
+      Message(
+        user: users[2],
+        lastMessage: 'Repairs of your door would be peformed on this day :',
+        lastTime: '2:30',
+      ),
+      Message(
+        user: users[2],
+        lastMessage: 'Repairs of your door would be peformed on this day :',
+        lastTime: '2:30',
+      ),
+      Message(
+        user: users[2],
+        lastMessage: 'Repairs of your door would be peformed on this day :',
+        lastTime: '2:30',
+      ),
+      Message(
+        user: users[2],
+        lastMessage: 'Repairs of your door would be peformed on this day :',
+        lastTime: '2:30',
+      ),
+      Message(
+        user: users[2],
+        lastMessage: 'Repairs of your door would be peformed on this day :',
+        lastTime: '2:30',
+      ),
     ];
   }
 }

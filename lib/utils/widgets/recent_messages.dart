@@ -6,6 +6,7 @@ import 'package:port_hub/utils/navigation/navigation.dart';
 import '../../models/messages.dart';
 import '../../models/user.dart';
 import '../../pages/chats_page.dart';
+import '../../services/database_methods.dart';
 import '../styles/color_constants.dart';
 
 class RecentMessages extends StatefulWidget {
@@ -16,10 +17,60 @@ class RecentMessages extends StatefulWidget {
 }
 
 class _RecentMessagesState extends State<RecentMessages> {
-  // String? uid = FirebaseAuth.instance.currentUser?.uid;
+  var uid = FirebaseAuth.instance.currentUser?.uid;
+
+  DatabaseMethods myDatabase = DatabaseMethods();
+
+  Future funcThatMakesAsyncCall() async {
+    var result = await myDatabase.getName2();
+    setState(() {
+      result = result;
+    });
+    return result.toString();
+    // setState(() {
+    //   String someVal = result;
+    //   print(someVal);
+    //   return someVal.toString();
+    // });
+  }
+
+  // @override
+  // initState() {
+  //   funcThatMakesAsyncCall();
+  //   super.initState();
+  // }
+
+//   myDatabase.getName2().then((result) {
+//   print(result);
+//   setState(() {
+//     someVal = result;
+//   })
+// })
+
+  // FutureBuilder<String> getNameFuture() {
+  //   return FutureBuilder(
+  //     future: myDatabase.getName2(),
+  //     builder: (context, snapshot) {
+  //       if (snapshot.connectionState == ConnectionState.done) {
+  //         if (snapshot.hasError) {
+  //           return const Center(
+  //             child: Text('an error has occured '),
+  //           );
+  //         } else if (snapshot.hasData) {
+  //           final data = snapshot.data as String;
+  //           return const SizedBox.shrink();
+  //         }
+  //       }
+  //       return const CircularProgressIndicator.adaptive();
+  //     },
+  //   );
+  // }
+
+  // creating the stream here
   Stream<List<Users>> readUsers() => FirebaseFirestore.instance
       .collection('users')
-      .where('uid', isNotEqualTo: uid)
+      // modify where to user itself field
+      // .where('firstName', isNotEqualTo: funcThatMakesAsyncCall())
       .snapshots()
       .map((snapshot) =>
           snapshot.docs.map((doc) => Users.fromJson(doc.data())).toList());
@@ -39,47 +90,67 @@ class _RecentMessagesState extends State<RecentMessages> {
             topRight: Radius.circular(20),
           ),
         ),
-        child: _buildMessages(),
+
+        // creating the stream that gets data from users document
+        child: StreamBuilder<List<Users>>(
+          stream: readUsers(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator.adaptive());
+            }
+
+            // collection data returns a list type data (NOTE)
+            final List<Users> recentUsers = snapshot.data!;
+
+            if (recentUsers.isEmpty) {
+              return const Center(
+                child: Text('No friends'),
+              );
+            }
+
+            // so creating a listview depeding on that lenght of
+            // collection list document it returns
+            return ListView.separated(
+                physics: const BouncingScrollPhysics(),
+                padding: EdgeInsets.zero,
+                itemBuilder: (context, index) => _buildMessage(context, index),
+                separatorBuilder: (_, index) => const SizedBox(height: 30),
+                itemCount: recentUsers.length);
+          },
+        ),
       ),
     );
   }
 
-  Widget _buildMessages() {
-    return ListView.separated(
-        padding: EdgeInsets.zero,
-        itemBuilder: (context, index) => _buildMessage(context, index),
-        separatorBuilder: (_, index) => const SizedBox(height: 30),
-        itemCount: messageList.length);
-  }
-
   Widget _buildMessage(BuildContext context, int index) {
-    return InkWell(
-      onTap: () {
-        pushTo(context, Chat(message: messageList[index]));
-      },
-      child: StreamBuilder<List<Users>>(
-        stream: readUsers(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Text('loading...');
-          }
+    return StreamBuilder<List<Users>>(
+      stream: readUsers(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator.adaptive());
+        }
 
-          final List<Users> recentUsers = snapshot.data!;
+        final List<Users> recentUsers = snapshot.data!;
 
-          if (recentUsers.isEmpty) {
-            return const Center();
-          }
+        if (recentUsers.isEmpty) {
+          return const Center(
+            child: Text('No list'),
+          );
+        }
 
-          Users firstName = recentUsers[1];
-          Users lastName = recentUsers[1];
+        Users user = recentUsers[index];
 
-          return Row(
+        return InkWell(
+          onTap: () {
+            pushTo(context, Chat(userNameChatScreen: user));
+          },
+          child: Row(
             children: [
               Container(
-                child: CircleAvatar(
+                child: const CircleAvatar(
                   radius: 30,
-                  backgroundImage:
-                      AssetImage(messageList[index]!.user!.profilePhoto!),
+                  // backgroundImage:
+                  //     AssetImage(messageList[index]!.user!.profilePhoto!),
                 ),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
@@ -94,18 +165,21 @@ class _RecentMessagesState extends State<RecentMessages> {
                     Row(
                       children: [
                         Text(
-                          "${firstName.firstName}",
+                          "${user.firstName}",
                           // messageList[index]!.user!.firstName.toString(),
                           style: const TextStyle(fontSize: 14),
                         ),
                         const SizedBox(width: 5),
                         Text(
-                          "${lastName.lastName}",
+                          "${user.lastName}",
                           // messageList[index]!.user!.lastName.toString(),
                           style: const TextStyle(fontSize: 14),
                         ),
                         const Spacer(),
-                        Text(messageList[index]!.lastTime!),
+
+                        // Text(
+
+                        //   [index]!.lastTime!),
                         const SizedBox(width: 10),
                         CircleAvatar(
                           radius: 5,
@@ -114,7 +188,7 @@ class _RecentMessagesState extends State<RecentMessages> {
                       ],
                     ),
                     Text(
-                      messageList[index]!.lastMessage.toString(),
+                      "${user.lastMessage}",
                       style: const TextStyle(fontSize: 13),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -122,9 +196,9 @@ class _RecentMessagesState extends State<RecentMessages> {
                 ),
               )
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

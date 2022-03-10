@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:port_hub/utils/widgets/chat_box.dart';
 import 'package:port_hub/utils/widgets/custom_appbar.dart';
 
-import '../models/messages.dart';
+import '../models/user.dart';
 import '../utils/styles/color_constants.dart';
 
 class Chat extends StatelessWidget {
-  final Message? message;
-  const Chat({Key? key, this.message}) : super(key: key);
+  final Users? userNameChatScreen;
+  const Chat({Key? key, this.userNameChatScreen}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +24,9 @@ class Chat extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    ('${message!.user!.firstName!}\n${message!.user!.lastName}'),
+                    '${userNameChatScreen!.firstName} ${userNameChatScreen!.lastName}',
                     style: TextStyle(
-                        fontSize: 25,
+                        fontSize: 20,
                         fontWeight: FontWeight.w300,
                         color: white),
                   ),

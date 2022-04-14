@@ -19,11 +19,8 @@ Link to Design on [Figma](https://www.figma.com/file/alRtPjVqpQNgMqt1uoLp2d/port
 
 | Home Screen | Chat Screen | 
 |    :---:     |     :---:      |  
-| <img src="graphics/home.png" width="500">   | <img src="graphics/chat.png" width="500">   |
+| <img src="graphics/home.png" width="500">   | <img src="graphics/message.png" width="500">   |
 
-| Drawer Screen | Favourites Screen | 
-|    :---:     |     :---:      |  
-| <img src="graphics/drawer.png" width="500">   | <img src="graphics/favourites.png" width="500">   |
 
 | Profile Screen | 
 |    :---:     |    

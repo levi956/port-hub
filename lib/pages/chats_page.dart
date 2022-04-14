@@ -40,7 +40,7 @@ class Chat extends StatelessWidget {
                 ],
               ),
             ),
-            const ChatBox()
+            ChatBox()
           ],
         ),
       ),

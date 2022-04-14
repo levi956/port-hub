@@ -5,6 +5,9 @@ class Users {
   String? email;
   String? lastMessage;
   String? profilePhoto;
+  String? level;
+  String? matricNo;
+  String? hostel;
 
   Users(
       {this.id,
@@ -12,15 +15,22 @@ class Users {
       this.lastName,
       this.profilePhoto,
       this.email,
+      this.level,
+      this.matricNo,
+      this.hostel,
       this.lastMessage});
 
   factory Users.fromJson(Map<String, dynamic> map) {
     return Users(
-        lastMessage: map["lastMessage"],
-        firstName: map["firstName"],
-        lastName: map["lastName"],
-        email: map["email"],
-        profilePhoto: map["profilePhoto"]);
+      lastMessage: map["lastMessage"],
+      firstName: map["firstName"],
+      lastName: map["lastName"],
+      email: map["email"],
+      level: map["level"],
+      matricNo: map["matricNo"],
+      hostel: map["hostel"],
+      profilePhoto: map["profilePhoto"],
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -28,7 +38,10 @@ class Users {
       "firstName": firstName,
       "lastName": lastName,
       "email": email,
-      "lastMessage": lastMessage
+      "lastMessage": lastMessage,
+      "level": level,
+      "hostel": hostel,
+      "matricNo": matricNo,
     };
   }
 

@@ -21,51 +21,6 @@ class _RecentMessagesState extends State<RecentMessages> {
 
   DatabaseMethods myDatabase = DatabaseMethods();
 
-  Future funcThatMakesAsyncCall() async {
-    var result = await myDatabase.getName2();
-    setState(() {
-      result = result;
-    });
-    return result.toString();
-    // setState(() {
-    //   String someVal = result;
-    //   print(someVal);
-    //   return someVal.toString();
-    // });
-  }
-
-  // @override
-  // initState() {
-  //   funcThatMakesAsyncCall();
-  //   super.initState();
-  // }
-
-//   myDatabase.getName2().then((result) {
-//   print(result);
-//   setState(() {
-//     someVal = result;
-//   })
-// })
-
-  // FutureBuilder<String> getNameFuture() {
-  //   return FutureBuilder(
-  //     future: myDatabase.getName2(),
-  //     builder: (context, snapshot) {
-  //       if (snapshot.connectionState == ConnectionState.done) {
-  //         if (snapshot.hasError) {
-  //           return const Center(
-  //             child: Text('an error has occured '),
-  //           );
-  //         } else if (snapshot.hasData) {
-  //           final data = snapshot.data as String;
-  //           return const SizedBox.shrink();
-  //         }
-  //       }
-  //       return const CircularProgressIndicator.adaptive();
-  //     },
-  //   );
-  // }
-
   // creating the stream here
   Stream<List<Users>> readUsers() => FirebaseFirestore.instance
       .collection('users')
@@ -108,13 +63,13 @@ class _RecentMessagesState extends State<RecentMessages> {
               );
             }
 
-            // so creating a listview depeding on that lenght of
+            // so creating a listview depending on that lenght of
             // collection list document it returns
             return ListView.separated(
                 physics: const BouncingScrollPhysics(),
                 padding: EdgeInsets.zero,
                 itemBuilder: (context, index) => _buildMessage(context, index),
-                separatorBuilder: (_, index) => const SizedBox(height: 30),
+                separatorBuilder: (_, index) => const SizedBox(height: 20),
                 itemCount: recentUsers.length);
           },
         ),

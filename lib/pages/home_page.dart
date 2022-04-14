@@ -38,28 +38,7 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.only(left: 25.0, top: 45),
               child: Row(
                 children: [
-                  FutureBuilder(
-                    future: myDatabase.getName2(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.hasError) {
-                          return const Center(
-                            child: Text('an error has occured '),
-                          );
-                        } else if (snapshot.hasData) {
-                          final data = snapshot.data as String;
-                          return Text(
-                            "Chat with\nyour portals, $data",
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w300,
-                                color: white),
-                          );
-                        }
-                      }
-                      return const CircularProgressIndicator.adaptive();
-                    },
-                  ),
+                  futureBuilder(myDatabase.getUserDetails()),
                   const Spacer(),
                   Container(
                     margin: const EdgeInsets.only(right: 25),
@@ -83,6 +62,31 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+    );
+  }
+
+  FutureBuilder<dynamic> futureBuilder(Future<dynamic> futureName) {
+    return FutureBuilder(
+      future: futureName,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text('an error has occured '),
+            );
+          } else if (snapshot.hasData) {
+            final data = snapshot.data["firstName"];
+
+            // final data = snapshot.data as String;
+            return Text(
+              "Chat with\nyour portals, $data",
+              style: TextStyle(
+                  fontSize: 20, fontWeight: FontWeight.w300, color: white),
+            );
+          }
+        }
+        return const CircularProgressIndicator.adaptive();
+      },
     );
   }
 }

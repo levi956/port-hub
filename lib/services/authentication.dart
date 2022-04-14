@@ -1,18 +1,13 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:port_hub/utils/widgets/message_toast.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 import '../utils/styles/color_constants.dart';
 
 class Auth {
   static Future<void> signUp(String email, String password) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
+      await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      // uid = userCredential.user!.uid;
-
     } on FirebaseAuthException catch (error) {
       showToast(error.toString());
     }
@@ -37,21 +32,21 @@ class Auth {
     await FirebaseAuth.instance.signOut();
   }
 
-  // attemot for the user profilev image feature
-  Future<bool> downloadUserPhotoUrl(File img) async {
-    try {
-      FirebaseStorage storage = FirebaseStorage.instance;
-      uid = FirebaseAuth.instance.currentUser?.uid;
-      TaskSnapshot shot =
-          await storage.ref("name of storage path/" + uid!).putFile(img);
-      String urlImage = await shot.ref.getDownloadURL();
-      // auth.currentUser.updatePhotoURL(url);
-      // await users.doc(auth.currentUser.uid).update({"photo": url});
-      showToast('Uploaded successfully');
-      return true;
-    } catch (e) {
-      showErrorToast("Unable to upload");
-      return false;
-    }
-  }
+  // attempt for the user profile image feature
+  // Future<bool> downloadUserPhotoUrl(File img) async {
+  //   try {
+  //     FirebaseStorage storage = FirebaseStorage.instance;
+  //     uid = FirebaseAuth.instance.currentUser?.uid;
+  //     TaskSnapshot shot =
+  //         await storage.ref("name of storage path/" + uid!).putFile(img);
+  //     String urlImage = await shot.ref.getDownloadURL();
+  //     // auth.currentUser.updatePhotoURL(url);
+  //     // await users.doc(auth.currentUser.uid).update({"photo": url});
+  //     showToast('Uploaded successfully');
+  //     return true;
+  //   } catch (e) {
+  //     showErrorToast("Unable to upload");
+  //     return false;
+  //   }
+  // }
 }

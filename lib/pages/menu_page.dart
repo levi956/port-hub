@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:port_hub/utils/navigation/navigation.dart';
 import 'package:port_hub/utils/widgets/background_image.dart';
 
-import '../services/auth.dart';
+import '../services/authentication.dart';
 import '../utils/styles/color_constants.dart';
 import 'onboarding_page.dart';
 import 'user/view_profile_page.dart';

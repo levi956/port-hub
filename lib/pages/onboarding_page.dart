@@ -17,7 +17,6 @@ class Onboarding extends StatefulWidget {
 }
 
 class _OnboardingState extends State<Onboarding> {
-  bool showSignIn = true;
   @override
   Widget build(BuildContext context) {
     setStatusBarColor(color: BarColor.black);

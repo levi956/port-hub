@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:port_hub/utils/widgets/background_image.dart';
 
+import '../../services/database_methods.dart';
 import '../../utils/navigation/navigation.dart';
 import '../../utils/status_bar_color.dart';
 import 'edit_profile_page.dart';
 
-class ViewProfile extends StatelessWidget {
+class ViewProfile extends StatefulWidget {
   const ViewProfile({Key? key}) : super(key: key);
 
+  @override
+  State<ViewProfile> createState() => _ViewProfileState();
+}
+
+class _ViewProfileState extends State<ViewProfile> {
+  DatabaseMethods myDatabase = DatabaseMethods();
   @override
   Widget build(BuildContext context) {
     setStatusBarColor(color: BarColor.black);
@@ -45,32 +52,54 @@ class ViewProfile extends StatelessWidget {
               const Center(
                 child: Text('User Profile'),
               ),
-              const SizedBox(height: 30),
-              userField('Name', 'to read from user database'),
-              const Divider(
-                color: Colors.black,
-              ),
-              const SizedBox(height: 30),
-              userField('Level', 'Edit profile to enter level'),
-              const Divider(
-                color: Colors.black,
-              ),
-              const SizedBox(height: 30),
-              userField('Hostel', 'NH'),
-              const Divider(
-                color: Colors.black,
-              ),
-              const SizedBox(height: 30),
-              userField('Matric no', 'SCI/018/*****'),
-              const Divider(
-                color: Colors.black,
-              ),
-              const SizedBox(height: 30),
-              userField('Email', 'nifesiodumirin@gmail.com'),
-              const Divider(
-                color: Colors.black,
-              ),
-              const SizedBox(height: 30),
+              FutureBuilder(
+                future: myDatabase.getUserDetails(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text('an error has occured '),
+                      );
+                    } else if (snapshot.hasData) {
+                      Map<String, dynamic> data =
+                          snapshot.data as Map<String, dynamic>;
+
+                      // final data = snapshot.data as String;
+                      return Column(
+                        children: [
+                          const SizedBox(height: 30),
+                          userField('Name', '${data['firstName']}'),
+                          const Divider(
+                            color: Colors.black,
+                          ),
+                          const SizedBox(height: 30),
+                          userField('Level', '${data['level']}'),
+                          const Divider(
+                            color: Colors.black,
+                          ),
+                          const SizedBox(height: 30),
+                          userField('Hostel', '${data['hostel']}'),
+                          const Divider(
+                            color: Colors.black,
+                          ),
+                          const SizedBox(height: 30),
+                          userField('Matric no', '${data['matricNo']}'),
+                          const Divider(
+                            color: Colors.black,
+                          ),
+                          const SizedBox(height: 30),
+                          userField('Email', '${data['email']}'),
+                          const Divider(
+                            color: Colors.black,
+                          ),
+                          const SizedBox(height: 30),
+                        ],
+                      );
+                    }
+                  }
+                  return const SizedBox.shrink();
+                },
+              )
             ],
           ),
         ),

@@ -5,7 +5,7 @@ import 'package:port_hub/utils/widgets/background_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:port_hub/utils/widgets/message_toast.dart';
 
-import '../services/auth.dart';
+import '../services/authentication.dart';
 import '../utils/navigation/navigation.dart';
 import '../utils/status_bar_color.dart';
 import '../utils/widgets/buttons.dart';
@@ -152,7 +152,9 @@ class _LoginState extends State<Login> {
   void signIn() async {
     showLoader(context);
     await Auth.signIn(
-        _emailController.text.trim(), _passwordController.text.trim());
+      _emailController.text.trim(),
+      _passwordController.text.trim(),
+    );
     pop(context);
 
     User? user = FirebaseAuth.instance.currentUser;

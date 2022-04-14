@@ -4,12 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:port_hub/pages/login_page.dart';
 import 'package:port_hub/pages/onboarding_page.dart';
+import 'package:port_hub/pages/sign_up_credential.dart';
 import 'package:port_hub/utils/styles/color_constants.dart';
 import 'package:port_hub/utils/widgets/background_image.dart';
-import 'package:port_hub/utils/widgets/bottom_sheet.dart';
 
 import '../models/user.dart';
-import '../services/auth.dart';
+import '../services/authentication.dart';
 import '../services/database_methods.dart';
 import '../utils/navigation/navigation.dart';
 import '../utils/status_bar_color.dart';
@@ -18,9 +18,7 @@ import '../utils/widgets/custom_textfield.dart';
 import '../utils/widgets/progress_indicator.dart';
 
 class SignUp extends StatefulWidget {
-  final Function? toggleView;
-
-  const SignUp({Key? key, this.toggleView}) : super(key: key);
+  const SignUp({Key? key}) : super(key: key);
 
   @override
   _SignUpState createState() => _SignUpState();
@@ -37,11 +35,11 @@ class _SignUpState extends State<SignUp> {
   }
 
   static final _formKey = GlobalKey<FormState>();
-  final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
-  final _newUserEmailController = TextEditingController();
-  final _newUserPasswordController = TextEditingController();
-  final _newUserConfirmPasswordController = TextEditingController();
+  final _firstName = TextEditingController();
+  final _lastName = TextEditingController();
+  final _newUserEmail = TextEditingController();
+  final _newUserPassword = TextEditingController();
+  final _newUserConfirmPassword = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +75,7 @@ class _SignUpState extends State<SignUp> {
                         },
                       ),
                       const SizedBox(
-                        height: 30,
+                        height: 10,
                       ),
                       Center(
                         child: Image.asset('assets/images/porthub.png',
@@ -85,7 +83,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                       const SizedBox(height: 25),
                       CustomInputFieldFb1(
-                        inputController: _firstNameController,
+                        inputController: _firstName,
                         hintText: 'First Name',
                         isHiddenText: false,
                         validatorR: (value) {
@@ -99,7 +97,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                       const SizedBox(height: 20),
                       CustomInputFieldFb1(
-                        inputController: _lastNameController,
+                        inputController: _lastName,
                         hintText: 'Last Name',
                         isHiddenText: false,
                         validatorR: (value) {
@@ -113,7 +111,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                       const SizedBox(height: 20),
                       CustomInputFieldFb1(
-                        inputController: _newUserEmailController,
+                        inputController: _newUserEmail,
                         hintText: 'Email',
                         isHiddenText: false,
                         validatorR: (value) {
@@ -138,7 +136,7 @@ class _SignUpState extends State<SignUp> {
                             color: Colors.black,
                           ),
                         ),
-                        inputController: _newUserPasswordController,
+                        inputController: _newUserPassword,
                         hintText: 'Password',
                         isHiddenText: _isVisible,
                         validatorR: (value) {
@@ -159,16 +157,15 @@ class _SignUpState extends State<SignUp> {
                             color: Colors.black,
                           ),
                         ),
-                        inputController: _newUserConfirmPasswordController,
+                        inputController: _newUserConfirmPassword,
                         hintText: 'Confrim Password',
                         isHiddenText: _isVisible,
                         validatorR: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please confirm your password';
                           }
-                          String paassword = _newUserPasswordController.text;
-                          if (paassword !=
-                              _newUserConfirmPasswordController.text) {
+                          String paassword = _newUserPassword.text;
+                          if (paassword != _newUserConfirmPassword.text) {
                             return 'Paasswords do not match';
                           }
                           return null;
@@ -181,7 +178,6 @@ class _SignUpState extends State<SignUp> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               signUp();
-                              // onPressed function goes here
                             }
                           },
                         ),
@@ -226,30 +222,27 @@ class _SignUpState extends State<SignUp> {
   void signUp() async {
     showLoader(context);
     await Auth.signUp(
-      _newUserEmailController.text.trim(),
-      _newUserPasswordController.text.trim(),
+      _newUserEmail.text.trim(),
+      _newUserPassword.text.trim(),
     );
 
-    // Map<String, String> userDetails = {
-    //   "firstName": _firstNameController.text.trim(),
-    //   "lastName": _lastNameController.text.trim(),
-    //   "email": _newUserEmailController.text.trim(),
-    // };
     pop(context);
 
     final User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      // showErrorToast('An error occured');
     } else {
-      // databaseMethods.uploadUserInfo(userDetails);
       await databaseMethods.addUserInfo(Users(
-          firstName: _firstNameController.text.trim(),
-          lastName: _lastNameController.text.trim(),
-          email: _newUserEmailController.text.trim()));
-      await showResponseBottomSheet(
-          context, 'Account Successfully Created\nPlease login');
-      pop(context);
-      Auth.signOut();
+          firstName: _firstName.text.trim(),
+          lastName: _lastName.text.trim(),
+          email: _newUserEmail.text.trim()));
+      pushToAndClearStack(context, const SignUpCredentials());
     }
   }
 }
+
+
+ // Map<String, String> userDetails = {
+    //   "firstName": _firstNameController.text.trim(),
+    //   "lastName": _lastNameController.text.trim(),
+    //   "email": _newUserEmailController.text.trim(),
+    // };
